@@ -5,39 +5,105 @@
 <title>My Vue</title>
 </head>
 <body>
-<div id="app1">
-	{{message}}
-</div>
-<div id="app2">
-	<span v-bind:title="message">
-		鼠标悬停几秒钟查看此处动态绑定的提示信息！
-	</span>
-</div>
-<div class="app3">
-	<p v-if="seen">现在你看到我了</p>
-</div>
+	<div id="app1">
+		{{message}}
+	</div>
+	<div id="app2">
+		<span v-bind:title="message">
+			鼠标悬停几秒钟查看此处动态绑定的提示信息！
+		</span>
+	</div>
+	<div class="app3">
+		<p v-if="seen">现在你看到我了</p>
+	</div>
+	<div id="app4">
+		<ol>
+			<li v-for="todo in todos">
+				{{todo.xing}}{{todo.ming}}
+			</li>
+		</ol>
+	</div>
+	<div id="app5">
+		<p>{{message}}</p>
+		<button v-on:click="reverseMessage">回文</button>
+	</div>
+	<div id="app6">
+		<p>{{message}}</p>
+		<input type="text" name="" v-model='message'>
+	</div>
+	<div id="app7">
+		<ol>
+			<todo-item v-for="item in items" v-bind:todo="item" v-bind:key="item.id"></todo-item>
+		</ol>
+	</div>
 <script type="text/javascript" src="vue.js"></script>
 <script type="text/javascript">
-var app1 = new Vue({
-	el:'#app1',
-	data:{
-		message:'hello world!'
-	}
-});
+	var app1 = new Vue({
+		el:'#app1',
+		data:{
+			message:'hello world!'
+		}
+	});
 
-var app2 = new Vue({
-	el:'#app2',
-	data:{
-		message:'页面加载于'+new Date().toLocaleString()
-	}
-});
+	var app2 = new Vue({
+		el:'#app2',
+		data:{
+			message:'页面加载于'+new Date().toLocaleString()
+		}
+	});
 
-var app3 = new Vue({
-	el:'.app3',
-	data:{
-		seen:true
-	}
-});
+	var app3 = new Vue({
+		el:'.app3',
+		data:{
+			seen:true
+		}
+	});
+
+	var app4 = new Vue({
+		el:'#app4',
+		data:{
+			todos:[
+				{'xing':'张','ming':'三'},
+				{'xing':'李','ming':'四'},
+				{'xing':'王','ming':'五'},
+				{'xing':'赵','ming':'六'}
+			]
+		}
+	});
+
+	var app5 = new Vue({
+		el:'#app5',
+		data:{
+			message:'Hello World!'
+		},
+		methods:{
+			reverseMessage:function(){
+				this.message = this.message.split('').reverse().join('');
+			}
+		}
+	});
+
+	var app6 = new Vue({
+		el:'#app6',
+		data:{
+			message:'Hello World!'
+		}
+	});
+
+	Vue.component('todo-item',{
+		props:['todo'],
+		template:'<li>{{todo.xing}}{{todo.ming}}</li>'
+	});
+	var app7 = new Vue({
+		el:'#app7',
+		data:{
+			items:[
+				{id:0,'xing':'张','ming':'三'},
+				{id:1,'xing':'李','ming':'四'},
+				{id:2,'xing':'王','ming':'五'}
+			]
+		}
+	});
 </script>
 </body>
 </html>
