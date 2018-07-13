@@ -5,23 +5,87 @@
 <title>My Vue</title>
 </head>
 <body>
-	<div id="app1">
-		{{vm.a}}
+	<div id="app1" >
+		{{a}}
+	</div>
+	<div id="app2">
+		<p>{{foo}}</p>
+		<button v-on:click="reverseMessage">回文</button>
+	</div>
+	<div id="app3">
+		<p>{{foo}} (不可更新)</p>
+		<button v-on:click="reverseMessage">回文</button>
+	</div>
+	<div id="app4">
+		<p>{{foo}}</p>
+		<button v-on:click="reverseMessage">回文</button>
 	</div>
 <script type="text/javascript" src="vue.js"></script>
 <script type="text/javascript">
 	var obj = {a:1};
-	var vm = new Vue({
+	var app1 = new Vue({
 		el:'#app1',
 		data:obj
 	});
 
-	console.log(vm.a);
-	console.log(vm.a == obj.a);
-	vm.a =2;
-	console.log(vm.a ,obj.a);
+	console.log(app1.a);
+	console.log(app1.a == obj.a);
+	app1.a =2;
+	console.log(app1.a ,obj.a);
 	obj.a = 3;
-	console.log(vm.a,obj.a);
+	console.log(app1.a,obj.a);
+
+	var app2 = new 	Vue({
+		el:'#app2',
+		data:{
+			foo:'Foreverlan'
+		},
+		methods:{
+			reverseMessage:function(){
+				console.log(this.foo);
+				this.foo = this.foo.split('').reverse().join('');
+			}
+		}
+	});
+
+
+	var obj = {
+  		foo: 'Foreverlan'
+	};
+	Object.freeze(obj);
+	var app3 = new Vue({
+		el:'#app3',
+		data:obj,
+		methods:{
+			reverseMessage:function(){
+				let that = this;
+				that.foo = that.foo.split('').reverse().join('');
+			}
+		}
+	});
+	console.log(app3.foo);
+
+	var app4 = new Vue({
+		el:'#app4',
+		data:{
+			foo:'Foreverlan'
+		},
+		methods:{
+			reverseMessage:function(){
+				let that = this;
+				that.foo = that.foo.split('').reverse().join('');
+			}
+		}
+	});
+	console.log(app4.$el);
+	console.log(document.getElementById('app4'));
+	console.log(app4.$data);
+	app4.$watch('foo',function(newValue,oldValue){
+		console.log('foo的值已经改变');
+		console.log('旧值：'+ oldValue + '   新值：'+newValue);
+	});
+	
+	
 </script>
 </body>
 </html>
