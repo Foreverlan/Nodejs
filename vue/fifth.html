@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>My Vue</title>
+<link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+	<div id="watch-example">
+		<p>
+			问题：
+			<input type="text" name="question" v-model="question">
+		</p>
+		<p>问题：{{question}}</p>
+		<p>回答：{{answer}}</p>
+	</div>
+<script type="text/javascript" src="vue.js"></script>
+<script type="text/javascript" src="axios.min.js"></script>
+<script type="text/javascript" src="lodash.min.js"></script>
+<script type="text/javascript">
+	var watchExample = new Vue({
+		el:'#watch-example',
+		data:{
+			question:'',
+			answer:'请输入问题，我才能给你答案。',
+		},
+		watch:{
+			question:function(newValue,oldValue){
+				let that = this;
+				console.log(newValue,oldValue);
+				if((newValue) ==''){
+					that.answer = "请输入问题，我才能给你答案。";
+				}
+				else{
+					that.answer = '等待你的问题输入完成...';
+					this.getAnswer(newValue);
+				}				
+				
+			}
+		},
+		methods:{
+			getAnswer:function(question){
+				let that = this;
+				if(question.indexOf('?') === -1){
+					this.answer = '问题必须以？结束。';
+					return ;
+				}
+				that.answer = '正在回答，请等待...';
+				axios.get('https://yesno.wtf/api')
+					.then(function(response){
+						that.answer = response.data.answer;
+					})
+					.catch(function(error){
+						that.answer = 'API错误' + error;
+					})
+				
+			}
+		}
+	});
+</script>
+</body>
+</html>

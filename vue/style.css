@@ -3,9 +3,12 @@
 }
 
 .color_green{
-	color: green;
+	color: green !important;
 }
 
 .color_blue{
-	color:blue;
+	color:blue !important;
+}
+.bold{
+	font-weight: 900;
 }
